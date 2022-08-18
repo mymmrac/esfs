@@ -1,4 +1,4 @@
-//go:generate go build -o ../bin/esfs github.com/mymmrac/esfs/cmd
+//go:generate go build -o ../../bin/esfs github.com/mymmrac/esfs/cmd/esfs
 
 package main
 
