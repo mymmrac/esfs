@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"gtihub.com/mymmrac/esfs"
+	"github.com/mymmrac/esfs"
 )
 
 //go:embed testdata

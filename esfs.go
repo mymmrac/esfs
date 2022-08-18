@@ -22,7 +22,7 @@ type Config struct {
 	GracefulShutdown bool             `validate:"-"`
 	SubDir           string           `validate:"-"`
 
-	Dir string `validate:"required_without=FileSystem|file"`
+	Dir string `validate:"omitempty,dir"`
 
 	FileSystem     fs.FS       `validate:"required_without=Dir"`
 	TempDir        string      `validate:"omitempty,required_with=FileSystem,dir"`
@@ -56,15 +56,22 @@ func ServeDir(addr, dir string, options ...Option) error {
 	return Serve(addr, append(op, options...)...)
 }
 
+type DiscardLogger struct{}
+
+func (d DiscardLogger) Printf(format string, args ...any) {}
+
 func Serve(addr string, options ...Option) error {
 	cfg := &Config{
-		Addr:   addr,
-		Server: &fasthttp.Server{},
+		Addr: addr,
+		Server: &fasthttp.Server{
+			Logger: DiscardLogger{},
+		},
 
 		TempDirPattern: "esfs-",
 		TempFilesPerm:  0o700,
 
-		IndexNames: []string{"index.html"},
+		IndexNames:   []string{"index.html"},
+		PathNotFound: func(ctx *fasthttp.RequestCtx) { ctx.NotFound() },
 	}
 
 	for _, op := range options {
