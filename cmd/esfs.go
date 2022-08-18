@@ -1,3 +1,5 @@
+//go:generate go build -o ../bin/esfs github.com/mymmrac/esfs/cmd
+
 package main
 
 import (
